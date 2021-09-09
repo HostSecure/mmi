@@ -1,2 +1,2 @@
-# Pro.tmp file
-*.pro.user
+*.user
+.DS_Store

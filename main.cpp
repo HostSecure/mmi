@@ -4,6 +4,11 @@
 #include <QIcon>
 #include "hostsecurecollection.h"
 
+/* MessageHandler */
+#include "MqttInterface.hpp"
+#include "EdgeHandler.hpp"
+#include "DatabaseHandler.hpp"
+
 namespace
 {
    void registerTypes();
@@ -37,6 +42,15 @@ int main( int argc, char *argv[] )
    }, Qt::QueuedConnection );
    engine.load( url );
 
+   /* Configure broker (server) */
+   QString broker_addr = "127.0.0.1";
+   quint16 broker_port = 1883;
+
+   /* Initialize a unique pointer to DatabaseHandler */
+   QScopedPointer<MessageHandler::Gateway::DatabaseHandler> database_handler = QScopedPointer<MessageHandler::Gateway::DatabaseHandler>(
+       new MessageHandler::Gateway::DatabaseHandler(broker_addr, broker_port)
+   );
+
    return app.exec();
 }
 
@@ -51,33 +65,3 @@ namespace
       qmlRegisterUncreatableType< UsbDeviceModel       >( uri, 1, 0, "UsbDeviceModel", msg );
    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
