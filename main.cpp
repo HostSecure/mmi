@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QIcon>
 #include "hostsecurecollection.h"
+#include "devicemodel.h"
 
 namespace
 {
@@ -11,6 +12,8 @@ namespace
 
 int main( int argc, char *argv[] )
 {
+   qputenv("QML_DISABLE_DISK_CACHE", "1");
+
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -42,13 +45,18 @@ int main( int argc, char *argv[] )
 
 namespace
 {
+   //!
+   //! \brief registerTypes Register QtObject in Qt metadata to be able to access
+   //! the exposed properties and functions in QML.
+   //!
    void registerTypes()
    {
       constexpr auto msg = "Cannot create from QML..";
       constexpr auto uri = "HostSecure";
-      qmlRegisterUncreatableType< HostSecureCollection >( "HostSecure", 1, 0, "HostSecureCollection", msg );
+      qmlRegisterUncreatableType< HostSecureCollection >( "HostSecure", 1, 0, "HostSecureCollection", msg );      
+      qmlRegisterUncreatableType< MmiMqttClient        >( uri, 1, 0, "MmiMqttClient", msg );
       qmlRegisterUncreatableType< EdgeModel            >( uri, 1, 0, "EdgeModel", msg );
-      qmlRegisterUncreatableType< UsbDeviceModel       >( uri, 1, 0, "UsbDeviceModel", msg );
+      qmlRegisterUncreatableType< DeviceModel          >( uri, 1, 0, "DeviceModel", msg );
    }
 }
 

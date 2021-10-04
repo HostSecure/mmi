@@ -1,29 +1,30 @@
-QT += quick network
+QT += quick mqtt
 
-CONFIG += c++17
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+CONFIG += c++2a
 
 INCLUDEPATH += src
+
+DEPENDPATH += ../messagehandler/lib/include
+INCLUDEPATH += ../messagehandler/lib/include
+LIBS += -L../messagehandler/lib -lmessagehandler
+
+# If release build
+CONFIG(release, debug|release) {
+    DEFINES += QT_NO_DEBUG_OUTPUT
+}
 
 SOURCES += \
     main.cpp \
     src/hostsecurecollection.cpp \
-    # Models
     src/edgemodel.cpp \
-    src/usbdevicemodel.cpp \
-    # Common
-    src/commonutils.cpp
+    src/devicemodel.cpp \
+    src/mmimqttclient.cpp
 
 HEADERS += \
     src/hostsecurecollection.h \
-    # Models
     src/edgemodel.h \
-    src/usbdevicemodel.h \
-    # Common
-    src/commonutils.h
+    src/devicemodel.h \
+    src/mmimqttclient.h
 
 RESOURCES += \
     qml/main/qml.qrc \
